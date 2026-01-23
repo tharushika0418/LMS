@@ -3,37 +3,31 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 
-// Initialize app
-const app = express();
+// Import routes
+const studentRoutes = require('./routes/studentRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 // Connect to database
 connectDB();
 
+const app = express();
+
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 // Routes
-app.use('/api/students', require('./routes/studentRoutes'));
+app.use('/api/students', studentRoutes);
+app.use('/api/auth', authRoutes);
 
-// Health check route
+// Health check
 app.get('/', (req, res) => {
-  res.json({ message: 'EduConnect API is running 🚀' });
+  res.json({ message: 'EduConnect API is running' });
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
-    success: false,
-    message: 'Something went wrong!',
-    error: err.message
-  });
-});
-
-// Start server
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });

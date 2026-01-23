@@ -1,7 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Navbar = () => {
+  const { admin, logout } = useAuth();
+
+  const handleLogout = () => {
+    if (window.confirm('Are you sure you want to logout?')) {
+      logout();
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white sticky-top">
       <div className="container">
@@ -31,6 +40,26 @@ const Navbar = () => {
                 Add Student
               </Link>
             </li>
+            {admin && (
+              <>
+                <li className="nav-item">
+                  <span className="nav-link text-muted">
+                    <i className="bi bi-person-circle me-1"></i>
+                    {admin.name}
+                  </span>
+                </li>
+                <li className="nav-item">
+                  <button 
+                    className="btn btn-outline-danger btn-sm ms-2" 
+                    onClick={handleLogout}
+                    style={{ marginTop: '4px' }}
+                  >
+                    <i className="bi bi-box-arrow-right me-1"></i>
+                    Logout
+                  </button>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

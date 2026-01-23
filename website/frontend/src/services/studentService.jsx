@@ -2,13 +2,34 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api/students';
 
-// Configure axios defaults
+// Get token from localStorage
+const getAuthConfig = () => {
+  const admin = JSON.parse(localStorage.getItem('admin'));
+  return {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${admin?.token}`,
+    },
+  };
+};
+
 const axiosInstance = axios.create({
   baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
+
+// Add request interceptor to include token
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const admin = JSON.parse(localStorage.getItem('admin'));
+    if (admin?.token) {
+      config.headers.Authorization = `Bearer ${admin.token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 // Get all students
 export const getAllStudents = async () => {
@@ -60,7 +81,6 @@ export const deleteStudent = async (id) => {
   }
 };
 
-// Export as default
 const studentService = {
   getAllStudents,
   getStudentById,
