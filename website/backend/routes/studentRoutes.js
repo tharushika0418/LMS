@@ -7,14 +7,16 @@ const {
   updateStudent,
   deleteStudent
 } = require('../controllers/studentController');
+const { protect } = require('../middleware/authMiddleware');
 
+// Protect all routes
 router.route('/')
-  .get(getAllStudents)
-  .post(createStudent);
+  .get(protect, getAllStudents)
+  .post(protect, createStudent);
 
 router.route('/:id')
-  .get(getStudentById)
-  .put(updateStudent)
-  .delete(deleteStudent);
+  .get(protect, getStudentById)
+  .put(protect, updateStudent)
+  .delete(protect, deleteStudent);
 
 module.exports = router;

@@ -22,6 +22,17 @@ body {
   color: var(--primary-color);
 }
 
+/* Auth Container */
+.auth-container {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+.auth-container .card {
+  border: none;
+  border-radius: 12px;
+}
+
 /* Professional Navbar */
 .navbar {
   box-shadow: 0 2px 4px rgba(0,0,0,0.08);
@@ -33,6 +44,16 @@ body {
   font-weight: 600;
   color: var(--primary-color) !important;
   font-size: 1.4rem;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  border: 1px solid #dee2e6;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.dropdown-item-text {
+  padding: 0.5rem 1rem;
 }
 
 /* Professional Card Design */
