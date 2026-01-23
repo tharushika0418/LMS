@@ -1,38 +1,159 @@
-.App {
-  text-align: center;
+/* Professional Color Palette */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #34495e;
+  --accent-color: #3498db;
+  --light-gray: #ecf0f1;
+  --dark-gray: #7f8c8d;
+  --success-color: #27ae60;
+  --danger-color: #e74c3c;
+  --white: #ffffff;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  color: var(--primary-color);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Professional Navbar */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  background-color: var(--white) !important;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  color: var(--primary-color) !important;
+  font-size: 1.4rem;
+}
+
+/* Professional Card Design */
+.card {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  background-color: var(--white);
+  border-bottom: 2px solid var(--light-gray);
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+/* Professional Buttons */
+.btn {
+  border-radius: 6px;
+  padding: 8px 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+  border-color: #2980b9;
+}
+
+.btn-outline-secondary {
+  color: var(--dark-gray);
+  border-color: var(--dark-gray);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--dark-gray);
+  color: var(--white);
+}
+
+/* Professional Table */
+.table {
+  background-color: var(--white);
+}
+
+.table thead th {
+  background-color: var(--light-gray);
+  color: var(--primary-color);
+  font-weight: 600;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Professional Form */
+.form-label {
+  font-weight: 500;
+  color: var(--secondary-color);
+  margin-bottom: 8px;
+}
+
+.form-control, .form-select {
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.15);
+}
+
+/* Badge Styling */
+.badge {
+  padding: 6px 12px;
+  font-weight: 500;
+}
+
+/* Container spacing */
+.main-content {
+  min-height: calc(100vh - 120px);
+  padding: 40px 0;
+}
+
+/* Loading Spinner */
+.spinner-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  min-height: 300px;
 }
 
-.App-link {
-  color: #61dafb;
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--dark-gray);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.empty-state i {
+  font-size: 4rem;
+  color: var(--light-gray);
+  margin-bottom: 20px;
+}
+
+/* Footer */
+.footer {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 20px 0;
+  margin-top: 60px;
 }
