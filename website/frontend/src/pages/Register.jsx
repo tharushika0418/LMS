@@ -53,7 +53,7 @@ const Register = () => {
   };
 
   return (
-    <div className="auth-container">
+    <div className="auth-container" style={{ background: '#f8f9fa' }}>
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="container">
         <div className="row justify-content-center align-items-center min-vh-100">
