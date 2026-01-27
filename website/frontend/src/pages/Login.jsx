@@ -100,10 +100,10 @@ const Login = () => {
 
                   <div className="text-center">
                     <p className="text-muted mb-0">
-                      {/* Don't have an account?{' '} */}
-                      {/* <Link to="/register" className="text-primary">
+                       Don't have an account?{' '}
+                       <Link to="/register" className="text-primary">
                         Register here
-                      </Link> */}
+                      </Link> 
                     </p>
                   </div>
                 </form>
