@@ -7,6 +7,10 @@ const connectDB = require('./config/db');
 const studentRoutes = require('./routes/studentRoutes');
 const authRoutes = require('./routes/authRoutes');
 
+// Import consumer services (they auto-initialize)
+const notificationService = require('./services/notificationService');
+const analyticsService = require('./services/analyticsService');
+
 // Connect to database
 connectDB();
 
@@ -26,8 +30,21 @@ app.get('/', (req, res) => {
   res.json({ message: 'EduConnect API is running' });
 });
 
+// Analytics endpoint (optional - to view statistics)
+app.get('/api/analytics/stats', (req, res) => {
+  const stats = analyticsService.getStatistics();
+  res.json({
+    success: true,
+    data: stats
+  });
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
+  console.log(`\n${'='.repeat(60)}`);
   console.log(`Server running on port ${PORT}`);
+  console.log(`Event-Driven Architecture: ENABLED`);
+  console.log(`Consumer Services: NotificationService, AnalyticsService`);
+  console.log(`${'='.repeat(60)}\n`);
 });

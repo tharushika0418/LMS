@@ -1,4 +1,5 @@
 const Student = require('../models/Student');
+const eventBus = require('../utils/eventBus');
 
 // @desc    Get all students
 // @route   GET /api/students
@@ -52,13 +53,39 @@ exports.getStudentById = async (req, res) => {
 // @access  Public
 exports.createStudent = async (req, res) => {
   try {
+    // 1. Complete database operation first
     const student = await Student.create(req.body);
     
+    console.log('[Producer] Student created successfully in DB');
+    
+    // 2. Prepare event payload
+    const eventPayload = {
+      eventName: 'StudentRegistered',
+      entityId: student._id.toString(),
+      timestamp: new Date().toISOString(),
+      metadata: {
+        studentId: student.studentId,
+        fullName: student.fullName,
+        email: student.email,
+        department: student.department,
+        enrollmentYear: student.enrollmentYear
+      }
+    };
+    
+    // 3. Publish event to Event Bus (non-blocking)
+    console.log('[Producer] Publishing StudentRegistered event...');
+    setImmediate(() => {
+      eventBus.publish('StudentRegistered', eventPayload);
+    });
+    
+    // 4. Return response immediately (don't wait for consumers)
+    console.log('[Producer] Returning response to client (before consumer processing)');
     res.status(201).json({
       success: true,
       message: 'Student created successfully',
       data: student
     });
+    
   } catch (error) {
     // Handle duplicate key error
     if (error.code === 11000) {
@@ -96,6 +123,23 @@ exports.updateStudent = async (req, res) => {
         message: 'Student not found'
       });
     }
+    
+    // Publish StudentUpdated event
+    const eventPayload = {
+      eventName: 'StudentUpdated',
+      entityId: student._id.toString(),
+      timestamp: new Date().toISOString(),
+      metadata: {
+        studentId: student.studentId,
+        fullName: student.fullName,
+        email: student.email,
+        updatedFields: Object.keys(req.body)
+      }
+    };
+    
+    setImmediate(() => {
+      eventBus.publish('StudentUpdated', eventPayload);
+    });
     
     res.status(200).json({
       success: true,
