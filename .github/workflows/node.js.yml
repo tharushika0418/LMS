@@ -1,49 +1,63 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
 name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
     runs-on: self-hosted
+
     strategy:
       matrix:
         node-version: [20.x]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+
+    # Checkout repository
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+
+    # Setup Node.js with correct cache path
+    - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        cache: npm
+        cache-dependency-path: website/backend/package-lock.json
 
-    # Backend dependencies
+
+    # Install backend dependencies
     - name: Install backend dependencies
-      run: |
-        cd website/backend
-        npm ci
+      working-directory: website/backend
+      run: npm ci
 
-    # Backend build
-    - name: Build backend
-      run: |
-        cd website/backend
-        npm run build --if-present
 
-    # Create .env from secrets
-    - name: Generate .env
+    # Generate .env file from GitHub Secrets
+    - name: Generate .env file
+      working-directory: website/backend
       run: |
-        cd website/backend
-        touch .env
-        echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
+        echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
         echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> .env
         echo "EMAIL_USER=${{ secrets.EMAIL_USER }}" >> .env
         echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
         echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
         echo "PORT=${{ secrets.PORT }}" >> .env
+
+
+    # Build backend
+    - name: Build backend
+      working-directory: website/backend
+      run: npm run build --if-present
+
+
+    # Optional: Start or restart backend using PM2
+    - name: Restart backend with PM2
+      working-directory: website/backend
+      run: |
+        pm2 delete lms-backend || true
+        pm2 start dist/index.js --name lms-backend
+        pm2 save
